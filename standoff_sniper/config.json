@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "dry_run": true,
+  "emulator": {
+    "check_window": false,
+    "window_title_keywords": [
+      "BlueStacks",
+      "LDPlayer",
+      "Standoff 2",
+      "MSI App Player",
+      "Nox",
+      "MEmu",
+      "MuMu"
+    ],
+    "last_window": {
+      "title": "BlueStacks Keymap Overlay",
+      "left": 0,
+      "top": 0,
+      "width": 2560,
+      "height": 1439
+    }
+  },
+  "coordinates": {
+    "refresh_filter": {
+      "x": 1236,
+      "y": 379
+    },
+    "first_lot": {
+      "x": 2352,
+      "y": 540
+    },
+    "buy_button": {
+      "x": 1270,
+      "y": 975
+    }
+  },
+  "regions": {
+    "first_lot": {
+      "left": 1585,
+      "top": 496,
+      "width": 296,
+      "height": 66
+    },
+    "buy_button_watch": {
+      "left": 2202,
+      "top": 503,
+      "width": 316,
+      "height": 71
+    },
+    "price": {
+      "left": 2007,
+      "top": 521,
+      "width": 125,
+      "height": 30
+    }
+  },
+  "templates": {
+    "sticker": "templates/sticker.png",
+    "buy_button": "templates/buy_button.png"
+  },
+  "vision": {
+    "min_stickers": 3,
+    "sticker_threshold": 0.84,
+    "buy_button_threshold": 0.82,
+    "sticker_min_distance_px": 16
+  },
+  "timing": {
+    "refresh_double_click_interval_ms": 70,
+    "after_refresh_delay_ms": 80,
+    "after_lot_click_delay_ms": 35,
+    "buy_button_timeout_ms": 650,
+    "buy_button_poll_interval_ms": 20,
+    "cycle_delay_ms": 40
+  },
+  "budget": {
+    "enabled": true,
+    "max_price": 2.0,
+    "decimal_separator": "."
+  },
+  "input": {
+    "backend": "pydirectinput",
+    "click_pause_ms": 15,
+    "stop_hotkey": "esc",
+    "pause_hotkey": "f4"
+  },
+  "debug": {
+    "save_misses": false,
+    "debug_dir": "debug"
+  },
+  "calibration": {
+    "updated_at": "2026-05-25T11:02:19.106907+00:00"
+  }
+}
