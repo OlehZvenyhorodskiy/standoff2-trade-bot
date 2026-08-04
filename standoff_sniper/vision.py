@@ -15,7 +15,6 @@ try:
 except ImportError:
     from config import require_region, resolve_project_path
 
-
 @dataclass(frozen=True)
 class TemplateMatch:
     x: int
@@ -24,10 +23,8 @@ class TemplateMatch:
     width: int
     height: int
 
-
 class VisionError(RuntimeError):
     """Ошибка захвата экрана, шаблонов или OCR."""
-
 
 def capture_region(region: dict[str, int]) -> np.ndarray:
     """Быстро снимает область экрана через mss и возвращает BGR-изображение для OpenCV."""
@@ -41,14 +38,12 @@ def capture_region(region: dict[str, int]) -> np.ndarray:
         frame = np.array(sct.grab(monitor))
     return frame[:, :, :3]
 
-
 def load_template(path_value: str | Path) -> np.ndarray:
     template_path = resolve_project_path(path_value)
     template = cv2.imread(str(template_path), cv2.IMREAD_COLOR)
     if template is None:
         raise VisionError(f"Не удалось загрузить шаблон: {template_path}")
     return template
-
 
 def match_template(
     image: np.ndarray,
@@ -87,7 +82,6 @@ def match_template(
 
     return accepted
 
-
 def count_stickers(config: dict[str, Any]) -> tuple[int, list[TemplateMatch]]:
     lot_region = require_region(config, "first_lot")
     frame = capture_region(lot_region)
@@ -99,7 +93,6 @@ def count_stickers(config: dict[str, Any]) -> tuple[int, list[TemplateMatch]]:
         min_distance_px=int(config["vision"]["sticker_min_distance_px"]),
     )
     return len(matches), matches
-
 
 def wait_for_buy_button(config: dict[str, Any]) -> bool:
     """Ждет, пока в заданной области появится кнопка покупки по шаблону."""
@@ -116,7 +109,6 @@ def wait_for_buy_button(config: dict[str, Any]) -> bool:
             return True
         time.sleep(poll_s)
     return False
-
 
 def read_price(config: dict[str, Any]) -> float | None:
     """Опциональный OCR цены. Используйте только если скорость цикла остается приемлемой."""

@@ -1,2 +1,1 @@
 """Standoff 2 Market Sniper package."""
-

@@ -13,7 +13,6 @@ except ImportError:
     from actions import InputBackendError, get_mouse_position
     from config import CONFIG_PATH, load_config, save_config
 
-
 POINT_STEPS = [
     ("refresh_filter", "кнопку/чекбокс фильтра «Только с наклейками»"),
     ("first_lot", "центр первого лота, по которому нужно кликать"),
@@ -25,19 +24,16 @@ REGION_STEPS = [
     ("buy_button_watch", "область появления кнопки «Купить»"),
 ]
 
-
 def _configure_console() -> None:
     """Помогает Windows-консолям корректно выводить русские сообщения."""
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(encoding="utf-8", errors="replace")
 
-
 def _print_header() -> None:
     print("\n=== Калибровка Standoff 2 Market Sniper ===")
     print("Не кликайте по эмулятору во время калибровки: просто наведите курсор и нажмите Enter в консоли.")
     print("Если окно консоли потеряло фокус, верните его Alt+Tab и повторите шаг.\n")
-
 
 def _read_yes_no(question: str, default: bool = False) -> bool:
     suffix = "Y/n" if default else "y/N"
@@ -45,7 +41,6 @@ def _read_yes_no(question: str, default: bool = False) -> bool:
     if not answer:
         return default
     return answer in {"y", "yes", "д", "да"}
-
 
 def _read_int(question: str, default: int, minimum: int | None = None, maximum: int | None = None) -> int:
     while True:
@@ -67,7 +62,6 @@ def _read_int(question: str, default: int, minimum: int | None = None, maximum: 
             continue
         return value
 
-
 def _read_float(question: str, default: float, minimum: float | None = None) -> float:
     while True:
         raw = input(f"{question} [{default}]: ").strip().replace(",", ".")
@@ -84,13 +78,11 @@ def _read_float(question: str, default: float, minimum: float | None = None) -> 
             continue
         return value
 
-
 def capture_point(description: str) -> dict[str, int]:
     input(f"Наведи курсор на {description} и нажми Enter...")
     x, y = get_mouse_position()
     print(f"  записано: x={x}, y={y}")
     return {"x": x, "y": y}
-
 
 def capture_region(description: str) -> dict[str, int]:
     print(f"\nНастройка области: {description}")
@@ -108,7 +100,6 @@ def capture_region(description: str) -> dict[str, int]:
     region = {"left": left, "top": top, "width": width, "height": height}
     print(f"  область: left={left}, top={top}, width={width}, height={height}")
     return region
-
 
 def find_emulator_window(keywords: list[str]) -> dict[str, Any] | None:
     """Опционально ищет окно эмулятора через pygetwindow, если пакет установлен."""
@@ -132,7 +123,6 @@ def find_emulator_window(keywords: list[str]) -> dict[str, Any] | None:
                 "height": int(window.height),
             }
     return None
-
 
 def calibrate(config: dict[str, Any]) -> dict[str, Any]:
     _print_header()
@@ -181,7 +171,6 @@ def calibrate(config: dict[str, Any]) -> dict[str, Any]:
 
     return config
 
-
 def main() -> int:
     _configure_console()
     parser = argparse.ArgumentParser(description="Калибровка координат для Standoff 2 Market Sniper")
@@ -199,7 +188,6 @@ def main() -> int:
     print(f"\nГотово. Конфигурация сохранена: {args.config}")
     time.sleep(0.2)
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

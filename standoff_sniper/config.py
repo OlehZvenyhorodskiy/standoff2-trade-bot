@@ -5,10 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-
 PROJECT_DIR = Path(__file__).resolve().parent
 CONFIG_PATH = PROJECT_DIR / "config.json"
-
 
 DEFAULT_CONFIG: dict[str, Any] = {
     "version": 1,
@@ -74,10 +72,8 @@ DEFAULT_CONFIG: dict[str, Any] = {
     },
 }
 
-
 class ConfigError(RuntimeError):
     """Ошибка чтения или проверки конфигурации."""
-
 
 def deep_merge(default: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
     """Рекурсивно дополняет пользовательский config новыми полями по умолчанию."""
@@ -88,7 +84,6 @@ def deep_merge(default: dict[str, Any], override: dict[str, Any]) -> dict[str, A
         else:
             result[key] = value
     return result
-
 
 def load_config(path: Path | str = CONFIG_PATH) -> dict[str, Any]:
     config_path = Path(path)
@@ -105,7 +100,6 @@ def load_config(path: Path | str = CONFIG_PATH) -> dict[str, Any]:
 
     return deep_merge(DEFAULT_CONFIG, raw)
 
-
 def save_config(config: dict[str, Any], path: Path | str = CONFIG_PATH) -> None:
     config_path = Path(path)
     config_path.parent.mkdir(parents=True, exist_ok=True)
@@ -116,29 +110,24 @@ def save_config(config: dict[str, Any], path: Path | str = CONFIG_PATH) -> None:
     )
     tmp_path.replace(config_path)
 
-
 def resolve_project_path(path_value: str | Path) -> Path:
     path = Path(path_value)
     if path.is_absolute():
         return path
     return PROJECT_DIR / path
 
-
 def point_is_ready(point: dict[str, Any]) -> bool:
     return isinstance(point.get("x"), int) and isinstance(point.get("y"), int)
-
 
 def region_is_ready(region: dict[str, Any]) -> bool:
     keys = ("left", "top", "width", "height")
     return all(isinstance(region.get(key), int) for key in keys) and region["width"] > 0 and region["height"] > 0
-
 
 def require_point(config: dict[str, Any], name: str) -> dict[str, int]:
     point = config["coordinates"].get(name)
     if not isinstance(point, dict) or not point_is_ready(point):
         raise ConfigError(f"Не откалибрована координата coordinates.{name}")
     return {"x": int(point["x"]), "y": int(point["y"])}
-
 
 def require_region(config: dict[str, Any], name: str) -> dict[str, int]:
     region = config["regions"].get(name)
@@ -151,7 +140,6 @@ def require_region(config: dict[str, Any], name: str) -> dict[str, int]:
         "height": int(region["height"]),
     }
 
-
 def validate_runtime_config(config: dict[str, Any]) -> None:
     """Проверяет только обязательные поля для основного цикла."""
     for point_name in ("refresh_filter", "first_lot", "buy_button"):
@@ -163,4 +151,3 @@ def validate_runtime_config(config: dict[str, Any]) -> None:
         template_path = resolve_project_path(config["templates"][template_key])
         if not template_path.exists():
             raise ConfigError(f"Не найден шаблон {template_key}: {template_path}")
-

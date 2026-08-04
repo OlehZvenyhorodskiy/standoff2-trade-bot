@@ -12,17 +12,14 @@ except ImportError:
     from actions import click, double_click
     from config import ConfigError, load_config, require_point, validate_runtime_config
 
-
 class StopRequested(Exception):
     """Сигнал остановки основного цикла."""
-
 
 def _configure_console() -> None:
     """Помогает Windows-консолям корректно выводить русские сообщения."""
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(encoding="utf-8", errors="replace")
-
 
 def ensure_emulator_window(config: dict[str, Any]) -> None:
     """Проверяет наличие окна эмулятора, если это включено в config.json."""
@@ -42,7 +39,6 @@ def ensure_emulator_window(config: dict[str, Any]) -> None:
 
     raise RuntimeError("Окно эмулятора не найдено. Проверьте emulator.window_title_keywords в config.json.")
 
-
 def load_vision_module() -> Any:
     """Загружает OpenCV/mss только тогда, когда они реально нужны."""
     try:
@@ -50,7 +46,6 @@ def load_vision_module() -> Any:
     except ImportError:
         import vision
     return vision
-
 
 def install_hotkeys(config: dict[str, Any], state: dict[str, bool]) -> None:
     """Подключает Esc для остановки и F4 для паузы, если доступен пакет keyboard."""
@@ -67,7 +62,6 @@ def install_hotkeys(config: dict[str, Any], state: dict[str, bool]) -> None:
     keyboard.add_hotkey(pause_hotkey, lambda: state.update(paused=not state["paused"]))
     print(f"Горячие клавиши: {stop_hotkey} — стоп, {pause_hotkey} — пауза/продолжить.")
 
-
 def budget_allows_purchase(config: dict[str, Any]) -> bool:
     if not bool(config["budget"]["enabled"]):
         return True
@@ -83,7 +77,6 @@ def budget_allows_purchase(config: dict[str, Any]) -> bool:
         print(f"Цена {price:.2f} выше лимита {max_price:.2f}, пропускаю.")
         return False
     return True
-
 
 def run_once(config: dict[str, Any]) -> None:
     backend_name = str(config["input"]["backend"])
@@ -125,7 +118,6 @@ def run_once(config: dict[str, Any]) -> None:
     click(buy_button_point, backend_name=backend_name, pause_ms=click_pause_ms)
     print("Клик покупки выполнен.")
 
-
 def run_loop(config: dict[str, Any], once: bool = False) -> None:
     ensure_emulator_window(config)
     state = {"stop": False, "paused": False}
@@ -142,7 +134,6 @@ def run_loop(config: dict[str, Any], once: bool = False) -> None:
             return
         time.sleep(int(config["timing"]["cycle_delay_ms"]) / 1000)
 
-
 def main() -> int:
     _configure_console()
     parser = argparse.ArgumentParser(description="Standoff 2 Market Sniper")
@@ -158,7 +149,6 @@ def main() -> int:
         print(f"Остановка: {exc}")
         return 1
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
